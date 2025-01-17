@@ -1,0 +1,29 @@
+name: QuickQuizGame
+version: '1.0'
+main: me.ooo7Oneu.quickQuizGame.QuickQuizGame
+api-version: '1.21'
+description: 早押しクイズ
+commands:
+  press:
+    red:
+    blue:
+    yellow:
+    green:
+  setpos:
+    red:
+    blue:
+    yellow:
+    green:
+  qqg:
+    reload:
+    open:
+      gui:
+    get:
+      gui:
+    set:
+      performer:
+permissions:
+  qqg.*:
+    children:
+      qqg.perform: true
+    default: op
