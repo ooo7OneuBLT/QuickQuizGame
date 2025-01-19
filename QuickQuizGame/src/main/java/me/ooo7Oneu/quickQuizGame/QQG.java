@@ -54,6 +54,10 @@ public class QQG implements CommandExecutor, TabCompleter {
                         commandSender.sendMessage("§4設定するプレイヤー名を入力してください");
                         return false;
                     }
+                    if (strings[1].equalsIgnoreCase("limitTime")) {
+                        commandSender.sendMessage("§4設定する時間を秒単位で入力してください。");
+                        return false;
+                    }
                 }
 
             } else if (strings.length == 3) {
@@ -61,10 +65,23 @@ public class QQG implements CommandExecutor, TabCompleter {
                     if (strings[1].equalsIgnoreCase("performer")) {
                         if (commandSender.isOp()) {
                             performer = strings[2];
+                            QuickQuizGame.getInstance().getConfig().set("performer", performer);
+                            QuickQuizGame.getInstance().saveConfig();
                             commandSender.sendMessage("§5出題者を §6" + performer + "§5 に設定しました。");
                             return true;
                         } else {
                             commandSender.sendMessage("§4OPを所持しているプレイヤーのみ実行可能です。");
+                        }
+                    }
+                    if (strings[1].equalsIgnoreCase("limitTime")) {
+                        if (commandSender.getName().equals(QuickQuizGame.getInstance().getConfig().getString("performer"))) {
+                            String time = strings[2];
+                            int intTime = Integer.parseInt(time);
+                            QuickQuizGame.getInstance().getConfig().set("limitTime", intTime);
+                            QuickQuizGame.getInstance().saveConfig();
+                            commandSender.sendMessage("§5制限時間を§6" + time + "秒§5に設定しました。");
+                        } else {
+                            commandSender.sendMessage("§4出題者以外が設定することはできません。");
                         }
                     }
                 }
@@ -109,10 +126,12 @@ public class QQG implements CommandExecutor, TabCompleter {
                     }
                 } else if (strings[0].equalsIgnoreCase("set")) {
                     if (strings[1].length() == 0) {
-                        return Arrays.asList("performer");
+                        return Arrays.asList("performer", "limitTime");
                     } else {
                         if ("performer".startsWith(strings[1])) {
                             return Collections.singletonList("performer");
+                        } else if ("limitTime".startsWith(strings[1])) {
+                            return Collections.singletonList("limitTime");
                         }
                     }
                     if (strings[2].length() == 0) {

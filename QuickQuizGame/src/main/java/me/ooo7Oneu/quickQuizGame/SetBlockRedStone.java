@@ -3,6 +3,8 @@ package me.ooo7Oneu.quickQuizGame;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class SetBlockRedStone extends JavaPlugin {

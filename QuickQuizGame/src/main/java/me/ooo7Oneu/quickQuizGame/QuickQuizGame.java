@@ -1,6 +1,7 @@
 package me.ooo7Oneu.quickQuizGame;
 
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class QuickQuizGame extends JavaPlugin {
@@ -17,10 +18,14 @@ public class QuickQuizGame extends JavaPlugin {
         Bukkit.getLogger().info("QuickQuizGameが正常にロードされました。");
         Bukkit.getLogger().info("[QuickQuizGame] version:" + checkVersion());
 
+        saveDefaultConfig();
+        Config.upload();
+
         setInstance(this);
 
         getServer().getPluginManager().registerEvents(new GuiListener(), this);
         getServer().getPluginManager().registerEvents(new QQGListener(), this);
+        getServer().getPluginManager().registerEvents(new SettingGUIListener(), this);
 
         instance = this;
 
@@ -32,8 +37,13 @@ public class QuickQuizGame extends JavaPlugin {
         redstoneRedY = getConfig().getInt("redstone.red.y");
         redstoneRedZ = getConfig().getInt("redstone.red.z");
 
+        if (getConfig().getInt("limitTime") == 0) {
+            SettingGUI.isLimitTime = false;
+        } else {
+            SettingGUI.isLimitTime = true;
+        }
+
         QQG.performer = getConfig().getString("performer");
-        saveDefaultConfig();
 
     }
 
@@ -49,16 +59,12 @@ public class QuickQuizGame extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
-    /*    getConfig().set("redstone.red.x", redstoneRedX);
-        getConfig().set("redstone.red.y", redstoneRedY);
-        getConfig().set("redstone.red.z", redstoneRedZ); */
         getConfig().set("performer", QQG.performer);
         saveConfig();
     }
 
     static String checkVersion() {
-        return "1.0";
+        return "1.1";
     }
 
 }

@@ -15,6 +15,7 @@ public class GUICommand extends JavaPlugin {
 
     static Boolean startedGame = false;
     static Boolean startedQuestion = false;
+    static Boolean isSetting = false;
 
     public static boolean openGUI(CommandSender sender, Command command, String s, String[] strings) {
         if (!(sender instanceof Player)) {
@@ -40,6 +41,8 @@ public class GUICommand extends JavaPlugin {
                     }
                     start.setItemMeta(startMeta);
                     inventory.setItem(10, start);
+
+
 
                     //終了
                     ItemStack quit = new ItemStack(Material.REDSTONE_BLOCK);
@@ -129,6 +132,8 @@ public class GUICommand extends JavaPlugin {
 
         //ゲーム開始前
         if (!startedGame) {
+
+            //開始
             ItemStack start = new ItemStack(Material.IRON_SWORD);
             ItemMeta correctMeta = start.getItemMeta();
             if (!(correctMeta == null)) {
@@ -136,6 +141,15 @@ public class GUICommand extends JavaPlugin {
             }
             start.setItemMeta(correctMeta);
             inventory.setItem(10, start);
+
+            //設定
+            ItemStack setting = new ItemStack(Material.ANVIL);
+            ItemMeta settingMeta = setting.getItemMeta();
+            if (!(settingMeta == null)) {
+                settingMeta.setDisplayName("§5設定");
+            }
+            setting.setItemMeta(settingMeta);
+            inventory.setItem(25,setting);
         }
 
         player.openInventory(inventory);

@@ -18,13 +18,6 @@ public class QQGListener implements Listener {
             if (action.equals(Action.RIGHT_CLICK_BLOCK) || action.equals(Action.RIGHT_CLICK_AIR)) {
                 if (player.getInventory().getItemInMainHand().getItemMeta().equals(Book.getBook().getItemMeta())) {
                     if (player.getInventory().getItemInMainHand().getItemMeta().equals(Book.getBook().getItemMeta())) {
-                        //Bukkit.getLogger().info(player.getDisplayName() + "が出題者GUIを開きました。");
-                        //Bukkit.getLogger().info("startedGame: " + GUICommand.startedGame + "  startedQuetion: " + GUICommand.startedQuestion);
-                    /*    if (PressList.pressList.isEmpty()) {
-                            Bukkit.getLogger().info("pressListがnullです。");
-                        } else {
-                            Bukkit.getLogger().info("pressListがnullではありません。" + PressList.pressList.toString());
-                        } */
                         player.performCommand("qqg open gui");
                     }
                 }

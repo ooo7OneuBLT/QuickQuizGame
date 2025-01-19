@@ -3,6 +3,7 @@ package me.ooo7Oneu.quickQuizGame;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -21,24 +22,34 @@ public class press implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         if (command.getName().equalsIgnoreCase("press")) {
+
             if (strings.length == 0) {
                 Bukkit.getLogger().info("実行したコマンドのサブコマンドが空欄です。");
                 commandSender.sendMessage("§4実行したコマンドのサブコマンドが空欄です。");
                 return false;
             } else if (strings.length == 1) {
+
+                for (Player onlinePlayers : Bukkit.getOnlinePlayers()) {
+                    onlinePlayers.playSound(onlinePlayers, Sound.BLOCK_NOTE_BLOCK_HARP, 1, 1);
+                }
+
                 if (strings[0].equalsIgnoreCase("red")) {
                     if (GUICommand.startedGame) {
                         if (GUICommand.startedQuestion) {
+                            if (!PressList.pressList.contains("red")) {
 
-                            for (Player player : Bukkit.getOnlinePlayers()) {
-                                player.sendMessage("§c赤チームがボタンを押しました。");
-                            }
+                                for (Player player : Bukkit.getOnlinePlayers()) {
+                                    player.sendMessage("§c赤チームがボタンを押しました。");
+                                }
 
-                            PressList.addList("red");
+                                LimitTime.stop = true;
 
-                            if (PressList.pressList.getFirst().equals("red")) {
-                                SetBlockRedStone.redSetBlockRedStone();
-                                return true;
+                                PressList.addList("red");
+
+                                if (PressList.pressList.getFirst().equals("red")) {
+                                    SetBlockRedStone.redSetBlockRedStone();
+                                    return true;
+                                }
                             }
                         }
                     }
@@ -46,16 +57,20 @@ public class press implements CommandExecutor {
                 if (strings[0].equalsIgnoreCase("blue")) {
                     if (GUICommand.startedGame) {
                         if (GUICommand.startedQuestion) {
+                            if (!PressList.pressList.contains("blue")) {
 
-                            for (Player player : Bukkit.getOnlinePlayers()) {
-                                player.sendMessage("§9青チームがボタンを押しました。");
-                            }
+                                for (Player player : Bukkit.getOnlinePlayers()) {
+                                    player.sendMessage("§9青チームがボタンを押しました。");
+                                }
 
-                            PressList.addList("blue");
+                                LimitTime.stop = true;
 
-                            if (PressList.pressList.getFirst().equals("blue")) {
-                                SetBlockRedStone.blueSetBlockRedStone();
-                                return true;
+                                PressList.addList("blue");
+
+                                if (PressList.pressList.getFirst().equals("blue")) {
+                                    SetBlockRedStone.blueSetBlockRedStone();
+                                    return true;
+                                }
                             }
                         }
                     }
@@ -63,16 +78,20 @@ public class press implements CommandExecutor {
                 if (strings[0].equalsIgnoreCase("yellow")) {
                     if (GUICommand.startedGame) {
                         if (GUICommand.startedQuestion) {
+                            if (!PressList.pressList.contains("yellow")) {
 
-                            for (Player player : Bukkit.getOnlinePlayers()) {
-                                player.sendMessage("§6黄色チームがボタンを押しました。");
-                            }
+                                for (Player player : Bukkit.getOnlinePlayers()) {
+                                    player.sendMessage("§6黄色チームがボタンを押しました。");
+                                }
 
-                            PressList.addList("yellow");
+                                LimitTime.stop = true;
 
-                            if (PressList.pressList.getFirst().equals("yellow")) {
-                                SetBlockRedStone.yellowSetBlockRedStone();
-                                return true;
+                                PressList.addList("yellow");
+
+                                if (PressList.pressList.getFirst().equals("yellow")) {
+                                    SetBlockRedStone.yellowSetBlockRedStone();
+                                    return true;
+                                }
                             }
                         }
                     }
@@ -80,16 +99,20 @@ public class press implements CommandExecutor {
                 if (strings[0].equalsIgnoreCase("green")) {
                     if (GUICommand.startedGame) {
                         if (GUICommand.startedQuestion) {
+                            if (!PressList.pressList.contains("green")) {
 
-                            for (Player player : Bukkit.getOnlinePlayers()) {
-                                player.sendMessage("§2緑チームがボタンを押しました。");
-                            }
+                                for (Player player : Bukkit.getOnlinePlayers()) {
+                                    player.sendMessage("§2緑チームがボタンを押しました。");
+                                }
 
-                            PressList.addList("green");
+                                LimitTime.stop = true;
 
-                            if (PressList.pressList.getFirst().equals("green")) {
-                                SetBlockRedStone.greenSetBlockRedStone();
-                                return true;
+                                PressList.addList("green");
+
+                                if (PressList.pressList.getFirst().equals("green")) {
+                                    SetBlockRedStone.greenSetBlockRedStone();
+                                    return true;
+                                }
                             }
                         }
                     }

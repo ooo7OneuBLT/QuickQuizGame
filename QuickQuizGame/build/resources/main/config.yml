@@ -15,4 +15,6 @@ redstone:
    x: 0
    y: 0
    z: 0
-performer:
+performer: null
+limitTime: 0
+countDownDisplay: true

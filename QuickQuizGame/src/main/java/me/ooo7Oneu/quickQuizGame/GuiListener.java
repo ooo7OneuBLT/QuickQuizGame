@@ -8,6 +8,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 public class GuiListener implements Listener {
@@ -15,7 +16,7 @@ public class GuiListener implements Listener {
     public static BukkitTask task;
 
     @EventHandler
-    public void onClick(InventoryClickEvent event) {
+    public static void onClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
         if (player.hasMetadata("OpnedPerformerGUI")) {
             event.setCancelled(true);
@@ -29,6 +30,17 @@ public class GuiListener implements Listener {
                     if (event.getSlot() == 10) {
                         for (Player onlinePlayers : Bukkit.getOnlinePlayers()) {
                             onlinePlayers.sendMessage("§5問題を開始します。");
+                        }
+
+                        LimitTime.stop = false;
+
+                        if (SettingGUI.isLimitTime) {
+                            if (QuickQuizGame.getInstance().getConfig().getInt("limitTime") != 0) {
+                                LimitTime.startLimitTime(QuickQuizGame.getInstance().getConfig().getInt("limitTime"));
+                            }
+                            for (Player p : Bukkit.getOnlinePlayers()) {
+                                p.sendMessage("§5制限時間は§6" + QuickQuizGame.getInstance().getConfig().getInt("limitTime") + "§5秒です。");
+                            }
                         }
 
                         PressList.removeAllList();
@@ -49,6 +61,7 @@ public class GuiListener implements Listener {
                             onlinePlayers.sendMessage("§9青チーム§r: " + Score.blueScore + "§5点");
                             onlinePlayers.sendMessage("§6黄色チーム§r: " + Score.yellowScore + "§5点");
                             onlinePlayers.sendMessage("§2緑チーム§r: " + Score.greenScore + "§5点");
+                            onlinePlayers.playSound(onlinePlayers, Sound.ENTITY_ENDER_DRAGON_DEATH, 1, 1);
                         }
                         press.resetPress();
                         GUICommand.startedGame = false;
@@ -57,71 +70,6 @@ public class GuiListener implements Listener {
                         }
                         player.closeInventory();
                     }
-
-                    //red
-                /*    if (event.getSlot() == 23) {
-                        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                            onlinePlayer.sendMessage("§c赤チームに回答権が与えられました。");
-                        }
-
-                        QuickQuizGame.getInstance().reloadConfig();
-                        Location location = new Location(Bukkit.getWorld("World"), QuickQuizGame.getInstance().getConfig().getInt("redstone.red.x") - 1, QuickQuizGame.getInstance().getConfig().getInt("redstone.red.y") - 2, QuickQuizGame.getInstance().getConfig().getInt("redstone.red.z") - 1);
-                        location.getBlock().setType(Material.REDSTONE_BLOCK);
-                        press.isPressedRed = true;
-                        GUICommand.startedQuestion = true;
-                        player.closeInventory();
-                        new ActionBar().runTaskTimer(QuickQuizGame.getInstance(), 0, 20);
-
-                    }
-
-                    //blue
-                    if (event.getSlot() == 24) {
-                        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                            onlinePlayer.sendMessage("§9青チームに回答権が与えられました。");
-                        }
-
-                        QuickQuizGame.getInstance().reloadConfig();
-                        Location location = new Location(Bukkit.getWorld("World"), QuickQuizGame.getInstance().getConfig().getInt("redstone.blue.x") - 1, QuickQuizGame.getInstance().getConfig().getInt("redstone.blue.y") - 2, QuickQuizGame.getInstance().getConfig().getInt("redstone.blue.z") - 1);
-                        location.getBlock().setType(Material.REDSTONE_BLOCK);
-                        press.isPressedBlue = true;
-                        GUICommand.startedQuestion = true;
-                        player.closeInventory();
-                        new ActionBar().runTaskTimer(QuickQuizGame.getInstance(), 0, 20);
-
-                    }
-
-                    //yellow
-                    if (event.getSlot() == 25) {
-                        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                            onlinePlayer.sendMessage("§6黄色チームに回答権が与えられました。");
-                        }
-
-                        QuickQuizGame.getInstance().reloadConfig();
-                        Location location = new Location(Bukkit.getWorld("World"), QuickQuizGame.getInstance().getConfig().getInt("redstone.yellow.x") - 1, QuickQuizGame.getInstance().getConfig().getInt("redstone.yellow.y") - 2, QuickQuizGame.getInstance().getConfig().getInt("redstone.yellow.z") - 1);
-                        location.getBlock().setType(Material.REDSTONE_BLOCK);
-                        press.isPressedYellow = true;
-                        GUICommand.startedQuestion = true;
-                        player.closeInventory();
-                        new ActionBar().runTaskTimer(QuickQuizGame.getInstance(), 0, 20);
-
-                    }
-
-                    //green
-                    if (event.getSlot() == 26) {
-                        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                            onlinePlayer.sendMessage("§2緑チームに回答権が与えられました。");
-                        }
-
-                        QuickQuizGame.getInstance().reloadConfig();
-                        Location location = new Location(Bukkit.getWorld("World"), QuickQuizGame.getInstance().getConfig().getInt("redstone.green.x") - 1, QuickQuizGame.getInstance().getConfig().getInt("redstone.green.y") - 2, QuickQuizGame.getInstance().getConfig().getInt("redstone.green.z") - 1);
-                        location.getBlock().setType(Material.REDSTONE_BLOCK);
-                        press.isPressedGreen = true;
-                        GUICommand.startedQuestion = true;
-                        player.closeInventory();
-                        new ActionBar().runTaskTimer(QuickQuizGame.getInstance(), 0, 20);
-
-                    } */
-
                 }
 
                 //問題が始まった後
@@ -135,9 +83,11 @@ public class GuiListener implements Listener {
 
                             for (Player onlinePlayers : Bukkit.getOnlinePlayers()) {
                                 onlinePlayers.sendMessage("§5問題をスキップしました。");
+                                onlinePlayers.playSound(onlinePlayers, Sound.BLOCK_ENDER_CHEST_CLOSE, 1, 1);
                             }
                             press.resetPress();
                             player.closeInventory();
+                            LimitTime.stop = true;
                             GUICommand.startedQuestion = false;
                         }
                     }
@@ -170,6 +120,7 @@ public class GuiListener implements Listener {
                             }
                             Score.updateScoreboard(player);
                             GUICommand.startedQuestion = false;
+                            Bukkit.getScheduler().cancelTask(1);
                             PressList.removeAllList();
                         }
                         if (event.getSlot() == 12) {
@@ -181,6 +132,10 @@ public class GuiListener implements Listener {
                                 onlinePlayers.playSound(onlinePlayers, Sound.ENTITY_ENDERMAN_DEATH, 1, 1);
                                 onlinePlayers.sendTitle("§4不正解", "");
                             }
+                            if (SettingGUI.isLimitTime) {
+                                LimitTime.stop = false;
+                                LimitTime.startLimitTime(QuickQuizGame.getInstance().getConfig().getInt("limitTime"));
+                            }
                         }
                     }
                 }
@@ -188,6 +143,8 @@ public class GuiListener implements Listener {
 
             //ゲームスタート前
             if (!GUICommand.startedGame) {
+
+                //開始
                 if (event.getSlot() == 10) {
                     Score.redScore = 0;
                     Score.blueScore = 0;
@@ -201,6 +158,15 @@ public class GuiListener implements Listener {
                         Score.createScoreboard(onlineplayer);
                         onlineplayer.playSound(onlineplayer, Sound.UI_TOAST_CHALLENGE_COMPLETE, 1, 1);
                     }
+                }
+
+                //設定
+                if (event.getSlot() == 25) {
+                    player.closeInventory();
+                    GUICommand.isSetting = true;
+                    //SettingGUI.defaultPage = true;
+                    SettingGUI.openSettingGUI(player);
+                    player.playSound(player, Sound.ENTITY_ARROW_HIT_PLAYER, 1, 1);
                 }
             }
 
