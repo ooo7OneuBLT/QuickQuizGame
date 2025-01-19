@@ -3,7 +3,7 @@ Minecraft内で早押しクイズができるようになるものです。
 
 Spigot version 1.21.1
 
-plugin version 1.0
+plugin version 1.1
 
 チームはRed, Blue, Yellow, Grenn の４つまでです。
 
@@ -48,3 +48,11 @@ config.ymlを直接入力することは推奨されません。
 &emsp;&emsp;&emsp;&emsp;指定したプレイヤーを出題者として設定します。
 
 &emsp;&emsp;&emsp;&emsp;※OPを所持しているプレイヤーのみ実行可能
+
+&emsp;&emsp;limitTime
+
+&emsp;&emsp;&emsp;< 秒数 >
+
+&emsp;&emsp;&emsp;&emsp;制限時間を設定します
+
+&emsp;&emsp;&emsp;&emsp;※0秒で機能をオフにします
